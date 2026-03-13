@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Virtual environment
+venv/
+.venv/
+env/
+
+# Data files (scraped data, databases, credentials)
+data/cookies.json
+data/listings.json
+data/listings.db
+data/db_updated.db
+data/state.json
+
+# Keep the data directory itself
+!data/.gitkeep
+
+# IDE
+.vscode/
+.idea/
+
+# macOS
+.DS_Store
+
+# Playwright
+playwright-report/
+test-results/
