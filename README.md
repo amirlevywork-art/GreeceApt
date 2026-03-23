@@ -41,10 +41,9 @@ src/greeceapt/
 ├── scraper/            # XE.gr scraper (pagination, detail fetch, bot detection)
 ├── cookies/            # Cookie capture and session management
 ├── utils/              # URL normalization, area prefix helpers, URL builder
-├── db/                 # listings.db schema and insert logic
+├── db/                 # listings.db schema, insert logic, scoring pipeline
 └── pipeline/
-    ├── ingest.py            # JSON → listings.db (with neighborhood canonicalization)
-    └── create_updated_db.py # listings.db → db_updated.db (scoring + deal filtering)
+    └── ingest.py            # JSON → listings.db (with neighborhood canonicalization)
 
 data/                   # Runtime files — not committed (see .gitignore)
 .ai/                    # AI agent context (architecture, coding rules, project notes)
@@ -87,7 +86,7 @@ python -m greeceapt.scraper.scrape_xe
 python -m greeceapt.pipeline.ingest
 
 # Step 4: Build scored deal database → data/db_updated.db
-python -m greeceapt.pipeline.create_updated_db
+python -m greeceapt.db.create_updated_db
 ```
 
 Steps 2–4 can be re-run any time. Step 1 only needs to be repeated when cookies expire.

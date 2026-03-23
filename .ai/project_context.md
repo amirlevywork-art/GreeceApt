@@ -29,9 +29,8 @@ src/greeceapt/
 ├── utils/helpers.py              # URL normalization, area prefix extraction
 ├── utils/url_builder.py          # Builds XE.gr search URL with query params
 ├── db/core.py                    # listings.db schema, insert logic
-├── db/areas_external.py          # Manual neighborhood score table utilities
 ├── pipeline/ingest.py            # JSON → listings.db with neighborhood canonicalization
-└── pipeline/create_updated_db.py # listings.db → db_updated.db with scoring & filtering
+└── db/create_updated_db.py       # listings.db → db_updated.db with scoring & filtering
 ```
 
 ---
@@ -86,7 +85,7 @@ python -m greeceapt.cookies.cookie_manager
 # Each scrape session:
 python -m greeceapt.scraper.scrape_xe
 python -m greeceapt.pipeline.ingest
-python -m greeceapt.pipeline.create_updated_db
+python -m greeceapt.db.create_updated_db
 ```
 
 Set `PYTHONPATH=src` (or use `pip install -e .`) before running.

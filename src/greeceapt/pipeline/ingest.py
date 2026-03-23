@@ -3,8 +3,8 @@ import json
 from pathlib import Path
 from typing import Any
 
-from greeceapt.db import create_tables, insert_listings
-from greeceapt.utils.helpers import AREA_PREFIXES, extract_area_prefix, strip_area_prefix
+from greeceapt.db import insert_listings
+from greeceapt.utils.helpers import extract_area_prefix, strip_area_prefix
 
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 
@@ -14,136 +14,135 @@ PROJECT_ROOT = Path(__file__).resolve().parents[3]
 
 NEIGHBORHOOD_CANONICAL = {
     # ------------------------------------------------------------
-    # Cleanups / junk values (map to None so you can drop/flag them)
-    # ------------------------------------------------------------
-    "130": None,
-    "Center": None,
-
-    # ------------------------------------------------------------
-    # Kypseli cluster
+    # CLUSTER 1: Kypseli-Patisia (High Yield & Metro 4 Growth)
+    # אשכול התשואה הגבוהה ביותר - שוק מאוחד סביב קו המטרו החדש
     # ------------------------------------------------------------
     "Kypseli": "Kypseli",
-    "Kipseli": "Kypseli",                  # typo/alt spelling
+    "Kipseli": "Kypseli",
     "Amerikis Square": "Kypseli",
     "Papadiamantis Square": "Kypseli",
     "Pedion tou Areos": "Kypseli",
     "Agios Nikolaos": "Kypseli",
     "Mpaknana": "Kypseli",
+    "Koliatsou": "Kypseli",
+    "Alepotrypa": "Kypseli",
+    "Ano Kypseli": "Kypseli",
+    "Nirvana": "Kypseli",
+    "Nirvanav": "Kypseli",
+    "Patisia": "Kypseli",
+    "Kato Patisia": "Kypseli",
+    "Ano Patisia": "Kypseli",
+    "Agios Eleftherios": "Kypseli",
+    "Tris Gefires": "Kypseli",
+    "Rizoupoli": "Kypseli",
+    "Prompona": "Kypseli",
+    "Lambrini": "Kypseli",
+    "Filadelfeia": "Kypseli",
+    "Galatsi": "Kypseli",              # גלאצי נסחרת בערכים דומים לצפון קיפסלי ב-2026
+    "Agia Eleousa": "Kypseli",
 
     # ------------------------------------------------------------
-    # Agios Panteleimonas / Attiki Square / Victoria / Larissis area
+    # CLUSTER 2: Central Transit Hub (Agios Panteleimonas - Deep Value)
+    # האזורים הזולים ביותר במרכז עם תשואה פוטנציאלית גבוהה
     # ------------------------------------------------------------
     "Agios Panteleimonas": "Agios Panteleimonas",
     "Attica Square": "Agios Panteleimonas",
+    "Attiki": "Agios Panteleimonas",
     "Viktorias Square": "Agios Panteleimonas",
     "Vathis Square": "Agios Panteleimonas",
     "Larissis station": "Agios Panteleimonas",
+    "Stathmos Larissis": "Agios Panteleimonas",
     "Ipirou": "Agios Panteleimonas",
+    "Omonia": "Agios Panteleimonas",
 
     # ------------------------------------------------------------
-    # Patissia / nearby north-center
+    # CLUSTER 3: University Belt (Zografou/Ampelokipoi - Safe LTR)
+    # שוק הסטודנטים והסגל הרפואי - ביקוש קשיח ויציב מאוד
     # ------------------------------------------------------------
-    "Patisia": "Patisia",
-    "Agios Eleftherios": "Patisia",
-    "Tris Gefires": "Patisia",
-    "Rizoupoli": "Patisia",
-    "Prompona": "Patisia",
-    "Lambrini": "Patisia",
-    "Filadelfeia": "Patisia",
+    "Zografou": "Zografou",
+    "Ilisia": "Zografou",
+    "Kaisariani": "Zografou",
+    "Ymittos": "Zografou",
+    "Girokomeio": "Zografou",
+    "Agios Loukas": "Zografou",
+    "Agios Thomas": "Zografou",
+    "Erythros": "Zografou",
+    "Kountouriotika": "Zografou",
+    "Nosokomeio Paidon": "Zografou",
+    "Ampelokipoi": "Zografou",
+    "Panormou": "Zografou",
+    "Gyzi": "Zografou",
+    "Gkyzi": "Zografou",
+    "Polygono": "Zografou",
+    "Ellinoroson": "Zografou",
 
     # ------------------------------------------------------------
-    # Central Athens
+    # CLUSTER 4: Southern Premium (Neos Kosmos/Kallithea - Appreciation)
+    # שכונות בביקוש גבוה בשל קרבה למרכז ולקוקאקי היקרה
     # ------------------------------------------------------------
-    "Omonia": "Omonia",
-    "Metaxourgeio": "Metaxourgeio",
-    "Keramikos": "Keramikos",
-    "Kolokinthou": "Metaxourgeio",         # treat as Metaxourgeio/Kolonos side
-    "Mouseio": "Exarcheia",                # close academic/exarchia-ish market
-    "Exarcheia": "Exarcheia",
-    "Neapoli": "Exarcheia",
-    "Strefi Hill": "Exarcheia",
-    "Lycabettus": "Kolonaki",              # market behaves closer to Kolonaki
-    "Kolonaki": "Kolonaki",
-    "Hilton": "Kolonaki",
-    "Ippokratous": "Exarcheia",
+    "Neos Kosmos": "Neos Kosmos",
+    "Agios Sostis": "Neos Kosmos",
+    "Kallirrois": "Neos Kosmos",
+    "Dourgouti": "Neos Kosmos",
+    "Kallithea": "Neos Kosmos",
+    "Tavros": "Neos Kosmos",
+    "Koukaki": "Neos Kosmos",
+    "Petralona": "Neos Kosmos",
 
     # ------------------------------------------------------------
-    # West / NW Athens
+    # CLUSTER 5: Blue Chip (Pagkrati - High Liquidity)
+    # נזילות מקסימלית - דירות שנמכרות במהירות שיא
+    # ------------------------------------------------------------
+    "Pagkrati": "Pagkrati",
+    "Vyronas": "Pagkrati",
+    "Gouva": "Pagkrati",
+    "Agios Artemios": "Pagkrati",
+    "Mets": "Pagkrati",
+    "Profitis Ilias": "Pagkrati",
+
+    # ------------------------------------------------------------
+    # CLUSTER 6: Growth West (Kolonos/Peristeri - Value)
+    # פוטנציאל עליית ערך גבוה בשל מחירי כניסה נמוכים
     # ------------------------------------------------------------
     "Kolonos": "Kolonos",
     "Skouze Hill": "Kolonos",
     "Akadimia Platonos": "Kolonos",
     "Sepolia": "Kolonos",
     "Egaleo": "Kolonos",
-    "Peristeri": "Peristeri",
-    "Agioi Anargyroi": "Peristeri",
-    "Chalkidona": "Peristeri",
-    "Ilion": "Peristeri",
+    "Kolokinthou": "Kolonos",
+    "Peristeri": "Kolonos",
+    "Chalkidona": "Kolonos",
+    "Ilion": "Kolonos",
+    "Agioi Anargyroi": "Kolonos",
 
     # ------------------------------------------------------------
-    # Ampelokipoi / Gkyzi / Polygono / Ilisia
+    # CLUSTER 7: Gentrification (Exarcheia - Hip & Central)
+    # אזור הנוודים הדיגיטליים והצעירים - עליית מחירי שכירות מואצת
     # ------------------------------------------------------------
-    "Ampelokipoi": "Ampelokipoi",
-    "Panormou": "Ampelokipoi",
-    "Gyzi": "Ampelokipoi",
-    "Polygono": "Ampelokipoi",
-    "Ellinoroson": "Ampelokipoi",
-    "Ilisia": "Ilisia",
-    "Agios Thomas": "Ilisia",
+    "Exarcheia": "Exarcheia",
+    "Mouseio": "Exarcheia",
+    "Neapoli": "Exarcheia",
+    "Strefi Hill": "Exarcheia",
+    "Ippokratous": "Exarcheia",
+    "Metaxourgeio": "Exarcheia",
+    "Keramikos": "Exarcheia",
 
     # ------------------------------------------------------------
-    # Zografou / Ymittos
+    # CLUSTER 8: Elite (Kolonaki - Low Yield, High Prestige)
+    # אזורי יוקרה - תשואה נמוכה אך נכסי "Safe Haven"
     # ------------------------------------------------------------
-    "Zografou": "Zografou",
-    "Kaisariani": "Kaisariani",
-    "Ymittos": "Zografou",
-    "Girokomeio": "Zografou",
-    "Agios Loukas": "Zografou",
+    "Kolonaki": "Kolonaki",
+    "Lycabettus": "Kolonaki",
+    "Hilton": "Kolonaki",
 
-    # ------------------------------------------------------------
-    # Pagkrati / Vyronas / Gouva
-    # ------------------------------------------------------------
-    "Pagkrati": "Pagkrati",
-    "Vyronas": "Vyronas",
-    "Gouva": "Vyronas",
-    "Agios Artemios": "Vyronas",
-
-    # ------------------------------------------------------------
-    # Kallithea / Tavros / Dourgouti / Neos Kosmos
-    # ------------------------------------------------------------
-    "Kallithea": "Kallithea",
-    "Tavros": "Kallithea",
-    "Dourgouti": "Kallithea",
-    "Neos Kosmos": "Neos Kosmos",
-    "Agios Sostis": "Neos Kosmos",
-    "Kallirrois": "Neos Kosmos",
-
-    # ------------------------------------------------------------
-    # South / Petralona / Koukaki
-    # ------------------------------------------------------------
-    "Petralona": "Petralona",
-    "Koukaki": "Koukaki",
-
-    # ------------------------------------------------------------
-    # Northern suburbs / other
-    # ------------------------------------------------------------
+    # --- Standalone / Outer ---
     "Agia Paraskevi": "Agia Paraskevi",
-    "Galatsi": "Galatsi",
-    "Agia Eleousa": "Galatsi",
-    "Nirvana": "Galatsi",
-    "Koliatsou": "Koliatsou",
-    "Alepotrypa": "Koliatsou",
-    "Erythros": "Koliatsou",
-    "Kountouriotika": "Koliatsou",
-    "Nosokomeio Paidon": "Koliatsou",
-    "Profitis Ilias": "Koliatsou",
-
-    # ------------------------------------------------------------
-    # Items I’m not confident about (keep as-is for now)
-    # ------------------------------------------------------------
     "Ionia": "Ionia",
     "Smyrni": "Smyrni",
-    "Lambrakis Hill": "Lambrakis Hill",
+
+    # --- Cleanup ---
+    "130": None,
+    "Center": None,
 }
 
 
@@ -179,6 +178,7 @@ def normalize_neighborhood_fields(item: dict[str, Any]) -> None:
     # Apply canonicalization AFTER prefix strip (important)
     item["neighborhood"] = normalize_neighborhood_name(item.get("neighborhood"))
 
+
 # -----------------------------------------
 # Read JSON
 # -----------------------------------------
@@ -201,6 +201,7 @@ def load_json(path: str | None = None) -> list[dict[str, Any]]:
 
     print(f"[INFO] Loaded {len(data)} listings from {p}")
     return data
+
 
 # -----------------------------------------
 # MAIN

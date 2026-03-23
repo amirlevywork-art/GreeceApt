@@ -47,7 +47,6 @@ from greeceapt.utils.helpers import (
 # Paths / constants
 # -----------------------------
 
-SRC_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 
 DATA_DIR = PROJECT_ROOT / "data"

@@ -36,38 +36,32 @@ from statistics import median
 # Neighborhood investment scores (CANONICAL names only)
 # ============================================================
 NEIGHBORHOOD_SCORES = {
-    # TIER 1: The "Gold Mine" (High Yield + Metro Growth + Budget Friendly)
-    "Kypseli": 96,           # Metro 4 Jackpot + High Gentrification
-    "Patisia": 94,           # Best Yield-to-Price ratio in the city
-    "Agios Panteleimonas": 92, # Deep value, highest yields (higher risk)
-    "Attiki": 91,            # Transport hub, very accessible prices
-    "Koliatsou": 89,         # Extension of Patisia value belt
-    "Kolonos": 88,           # Rising demand from digital nomads on a budget
+    # ------------------------------------------------------------
+    # TIER 1: "The Cash-Flow & Growth Kings" (ציון 90+)
+    # ------------------------------------------------------------
+    "Kypseli": 98,           # מנצחת השוק: שילוב של תשואה גבוהה (5.4%+), ג'נטריפיקציה ומטרו 4.
+    "Agios Panteleimonas": 92, # Deep Value: מחירי כניסה נמוכים (€1,850/מ"ר) המאפשרים תשואה מקסימלית.
 
-    # TIER 2: The "Safe Bet" (Strong Student/Professional Demand)
-    "Neos Kosmos": 86,       # Massive growth due to Southern Suburb spillover
-    "Zografou": 85,          # Recesion-proof student rentals
-    "Exarcheia": 84,         # High capital growth, though entry price is rising
-    "Galatsi": 83,           # Future Metro 4 hub, still affordable for now
-    "Ampelokipoi": 81,       # Solid professional/medical hub rental market
-    "Kaisariani": 80,        # Safe, green, and near the university
+    # ------------------------------------------------------------
+    # TIER 2: "Strong Momentum" (ציון 85-89)
+    # ------------------------------------------------------------
+    "Neos Kosmos": 89,       # פוטנציאל עליית ערך אדיר בשל קרבה לקוקאקי וצמיחה של 9%-12% בשנה.
+    "Kolonos": 88,           # מנוע צמיחה מערבי: מחירי כניסה נוחים עם עלייה יציבה בביקוש.
+    "Zografou": 86,          # חסינות מיתון: ביקוש קשיח של סטודנטים וסגל רפואי, נהנית מהרחבת המטרו.
+    "Exarcheia": 85,         # מוקד משיכה לנוודים דיגיטליים; תנופת בנייה סביב תחנת המטרו החדשה.
 
-    # TIER 3: The "Solid Mid-Range" (Resilient but higher entry prices)
-    "Pagkrati": 78,          # Extremely liquid, but yields are compressing
-    "Petralona": 77,         # High demand, but deals <€60k are getting rare
-    "Kallithea": 75,         # Very steady, great for long-term safe LTR
-    "Vyronas": 74,           # Stable family neighborhood, moderate yields
-    "Ilisia": 73,            # University proximity keeps it high, price is the barrier
-    "Peristeri": 72,         # Good value, but lower growth than the center line
+    # ------------------------------------------------------------
+    # TIER 3: "Safe Haven & Blue Chip" (ציון 70-84)
+    # ------------------------------------------------------------
+    "Pagkrati": 80,          # נזילות מקסימלית: "דיל" כאן נמכר תוך ימים, אך קשה למצוא מציאות מתחת ל-60k.
+    "Ionia": 64,             # אזור משפחתי סולידי, פחות פוטנציאל לזינוק במחיר ביחס למרכז.
+    "Agia Paraskevi": 60,    # פרבר מבוקש, אך התשואות נמוכות יותר מהמרכז בתקציב נתון זה.
 
-    # TIER 4: The "Speculative / Elite" (Low entry probability for €60k)
-    "Metaxourgeio": 70,      # High yield but high social risk/volatility
-    "Omonia": 68,            # Highest yields, but highest "broken deal" risk
-    "Smyrni": 67,            # (Nea Smyrni) Elite area, very few deals in your budget
-    "Keramikos": 65,         # Trendy, but prices now cater to higher budgets
-    "Ionia": 64,             # (Nea Ionia) Good area, but slower capital growth
-    "Koukaki": 55,           # Incredible area, but €60k usually buys a 10sqm basement
-    "Kolonaki": 45,          # Prestige is 100, but "Value for you" is low
+    # ------------------------------------------------------------
+    # TIER 4: "Premium but Low Yield" (ציון מתחת ל-60)
+    # ------------------------------------------------------------
+    "Smyrni": 67,            # שכונה יוקרתית; ב-60k קשה למצוא נכס שאינו קומת מרתף.
+    "Kolonaki": 45,          # יוקרה מקסימלית, אך התשואה הנמוכה בעיר (~3.9%) והמחיר למ"ר הגבוה ביותר.
 }
 TOP_NEIGHBORHOODS = list(NEIGHBORHOOD_SCORES.keys())
 
@@ -83,8 +77,8 @@ MIN_PHOTOS = 5  # >= MIN_PHOTOS
 # Suspicious low-price thresholds (as fraction of neighborhood median_raw psqm)
 # Below SUSPECT_FACTOR: almost certainly a data error → broken_candidate
 # Below BROKEN_FACTOR:  suspicious but possible → needs_review
-SUSPECT_FACTOR = 0.50
-BROKEN_FACTOR  = 0.70
+SUSPECT_FACTOR = 0.65
+BROKEN_FACTOR  = 0.75
 
 # Keep listings below this ratio of market_psqm as "deals"
 DEAL_MAX_RATIO = 0.80
@@ -101,9 +95,9 @@ IQR_K = 2
 # ============================================================
 # Scoring weights
 # ============================================================
-W_HOOD     = 0.36
-W_DISCOUNT = 0.32  # discount from market is the core deal signal
-W_FLOOR    = 0.19
+W_HOOD     = 0.25
+W_DISCOUNT = 0.40  # discount from market is the core deal signal
+W_FLOOR    = 0.22
 W_SIZE     = 0.13
 # Sum = 1.00; renovation_year is a flat bonus (not weighted)
 

@@ -4,49 +4,49 @@
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│                      USER / BROWSER                      │
-│  - Solves CAPTCHA manually when prompted                 │
-│  - Confirms verification is complete via terminal        │
+│                      USER / BROWSER                     │
+│  - Solves CAPTCHA manually when prompted                │
+│  - Confirms verification is complete via terminal       │
 └────────────────────────┬────────────────────────────────┘
                          │ (interactive, one-time)
                          ▼
 ┌─────────────────────────────────────────────────────────┐
-│              cookie_manager.py                           │
-│  Playwright browser → captures session cookies           │
-│  Output: data/cookies.json                               │
+│              cookie_manager.py                          │
+│  Playwright browser → captures session cookies          │
+│  Output: data/cookies.json                              │
 └────────────────────────┬────────────────────────────────┘
                          │
                          ▼
 ┌─────────────────────────────────────────────────────────┐
-│              scrape_xe.py                                │
-│  1. Load cookies, build XE.gr search URL                 │
-│  2. Paginate search results (scroll + Next button)       │
-│  3. Collect listing URLs (dedup by normalized path)      │
-│  4. Fetch listing detail pages (async, max 5 concurrent) │
-│  5. Parse HTML → structured listing dicts                │
-│  6. Merge with existing listings.json (dedup by url)     │
-│  Output: data/listings.json, data/state.json             │
+│              scrape_xe.py                               │
+│  1. Load cookies, build XE.gr search URL                │
+│  2. Paginate search results (scroll + Next button)      │
+│  3. Collect listing URLs (dedup by normalized path)     │
+│  4. Fetch listing detail pages (async, max 5 concurrent)│
+│  5. Parse HTML → structured listing dicts               │
+│  6. Merge with existing listings.json (dedup by url)    │
+│  Output: data/listings.json, data/state.json            │
 └────────────────────────┬────────────────────────────────┘
                          │
                          ▼
 ┌─────────────────────────────────────────────────────────┐
-│              ingest.py                                   │
-│  1. Load listings.json                                   │
-│  2. Canonicalize neighborhoods (147-entry map)           │
-│  3. Split Ano/Kato/Nea/Neo prefix → area column          │
-│  4. INSERT OR REPLACE into listings.db                   │
-│  Output: data/listings.db                                │
+│              ingest.py                                  │
+│  1. Load listings.json                                  │
+│  2. Canonicalize neighborhoods (147-entry map)          │
+│  3. Split Ano/Kato/Nea/Neo prefix → area column         │
+│  4. INSERT OR REPLACE into listings.db                  │
+│  Output: data/listings.db                               │
 └────────────────────────┬────────────────────────────────┘
                          │
                          ▼
 ┌─────────────────────────────────────────────────────────┐
-│              create_updated_db.py                        │
-│  1. Read listings.db (read-only)                         │
-│  2. Compute IQR-trimmed market median per neighborhood   │
-│  3. Classify each listing (deal/not_deal/needs_review/…) │
-│  4. Insert qualifying rows into db_updated.db            │
-│  5. Run SQL UPDATE to compute final_score                 │
-│  Output: data/db_updated.db                              │
+│              db/create_updated_db.py                       │
+│  1. Read listings.db (read-only)                        │
+│  2. Compute IQR-trimmed market median per neighborhood  │
+│  3. Classify each listing (deal/not_deal/needs_review/…)│
+│  4. Insert qualifying rows into db_updated.db           │
+│  5. Run SQL UPDATE to compute final_score               │
+│  Output: data/db_updated.db                             │
 └─────────────────────────────────────────────────────────┘
 ```
 
@@ -64,15 +64,12 @@ ingest.py
   └── uses: db/core.py (create_tables, insert_listings)
   └── uses: helpers.py (extract_area_prefix, strip_area_prefix)
 
-create_updated_db.py
+db/create_updated_db.py
   └── standalone — reads listings.db via sqlite3 directly
 
 db/core.py
   └── uses: helpers.py (normalize_listing_url)
 
-db/areas_external.py
-  └── uses: db/core.py (get_connection)
-  └── NOTE: NOT used by the main pipeline — manual/ad-hoc utility only
 ```
 
 ---
