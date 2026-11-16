@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "greeceapt"
+version = "0.1.0"
+description = "Ranks Athens flats for sale by the rental yield left after every cost and tax, using a local vision model and a calibrated rent model."
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.11"
+dependencies = [
+    "Pillow",
+    "imagehash",
+    "numpy",
+    "pydantic>=2,<3",
+    "requests",
+    "httpx",
+    "fastapi",
+    "uvicorn",
+]
+
+[project.optional-dependencies]
+dev = ["pytest"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"greeceapt.storage" = ["*.json"]
+"greeceapt.gui" = ["static/*"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+addopts = "-m 'not live'"
+markers = [
+    "live: end-to-end test that needs the real site and Ollama (run with -m live)",
+]

@@ -1,0 +1,8 @@
+Pillow
+imagehash
+requests
+httpx
+pydantic==2.14.2
+numpy>=2.0
+fastapi
+uvicorn

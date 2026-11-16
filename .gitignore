@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+.pytest_cache/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Virtual environment
+venv/
+.venv/
+env/
+
+# Accidental scraper output under src/ (canonical path is repo-root data/)
+src/data/
+
+# Everything the pipeline writes: scraped data, databases, the rent model, logs, backups
+data/*
+!data/.gitkeep
+
+# Cursor / Claude Code local settings (do not commit)
+.claude/
+
+# IDE
+.vscode/
+.idea/
+
+# macOS
+.DS_Store
+
+# Local tools
+graphify-out/

@@ -1,0 +1,8 @@
+#!/bin/sh
+# Refresh the ranking by hand:  ./update | ./update status | ./update check
+cd "$(dirname "$0")" || exit 1
+for python in venv/bin/python .venv/bin/python; do
+    [ -x "$python" ] && exec "$python" -m greeceapt.update "$@"
+done
+echo "No virtual environment found (venv/ or .venv/); see Setup in README.md." >&2
+exit 1

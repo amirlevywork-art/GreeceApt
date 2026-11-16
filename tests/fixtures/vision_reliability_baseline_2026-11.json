@@ -1,0 +1,31 @@
+{
+  "duplicate_agreement": {
+    "pairs": 315,
+    "median_abs_delta": 0.4598,
+    "p90_abs_delta": 1.6703,
+    "share_delta_above_1": 0.2159,
+    "share_factor_differs_over_5pct": 0.0667
+  },
+  "validity": {
+    "renovated": {
+      "n": 289,
+      "median": 8.7634,
+      "share_ge_8": 0.692,
+      "share_lt_6": 0.0173
+    },
+    "needs_renovation": {
+      "n": 167,
+      "median": 6.112,
+      "share_ge_8": 0.024,
+      "share_lt_6": 0.4611
+    }
+  },
+  "distribution": {
+    "n": 1160,
+    "median": 7.156,
+    "p10": 5.4389,
+    "p90": 9.3654,
+    "share_ge_8": 0.3207,
+    "share_lt_4": 0.0112
+  }
+}

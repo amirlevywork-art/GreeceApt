@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "canonical_basis": "Spitogatos/Indomio area taxonomy",
+  "approved_on": "2026-11-05",
+  "notes": "Table A of data/neighborhood_aliases_draft.md (approved) plus spelling variants that existed only as keys of the tier map. Ambiguous names (Gyzi, Koukaki, Keramikos, ...) and other municipalities are intentionally NOT mapped.",
+  "aliases": {
+    "Amerikis Square": "Plateia Amerikis",
+    "Attica Square": "Plateia Attikis",
+    "Kypseli": "Kipseli",
+    "Nea Kypseli": "Nea Kipseli",
+    "Koliatsou": "Plateia Koliatsou",
+    "Akadimia Platonos": "akadimia Platonos",
+    "Vathis Square": "Plateia Vathis",
+    "Viktorias Square": "Agiou Meletiou - Victorias Square - Marni",
+    "Pedion tou Areos": "Pedion Areos",
+    "Neapoli": "Neapoli Exarcheion",
+    "Ano Kypseli": "Ano Kipseli",
+    "Stathmos Larissis": "Stathmos Larisis",
+    "Larissis station": "Stathmos Larisis",
+    "Victoria Square": "Agiou Meletiou - Victorias Square - Marni",
+    "Lycabettus": "Lykavittos",
+    "Kynosargous": "Kinosargous"
+  }
+}
